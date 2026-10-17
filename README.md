@@ -1,30 +1,40 @@
+[中文](README.zh-CN.md) / **ENG**
+
 # Shopping List Tracker
 
-Lightweight Tkinter desktop app that keeps track of household purchases. Items move through **Candidate → To Buy → Purchased** columns via drag-and-drop, while checkboxes are reserved for delete and live selection totals.
+A small Tkinter desktop app for household purchases, with a Chinese interface. Add items and prices, then drag rows between 待选 (Candidate), 未购买 (To Buy), and 已购买 (Purchased). Each column shows item counts, costs, and live selection totals.
 
-## Features
-- Add items with custom names and prices
-- Three-column workflow with drag-and-drop transitions
-- Per-column totals plus live “selected” counts/costs
-- Persistent storage (`shopping_tracker_data.json` in your home directory)
-- Optional PyInstaller build for a single-file executable (`统计清单.exe`)
+## Run
 
-## Getting Started
-1. Install Python 3.11+ (Tkinter included on Windows/macOS).
-2. Clone the repo and run:
-    ```bash
-    python list.py
-    ```
+Use Python 3.11+ with Tkinter and a graphical desktop. From the repository directory:
 
-Add items in the Candidate column, drag them between columns, and use checkboxes only for delete/selection stats.
+```bash
+python list.py
+```
 
-Build an EXE (optional)
+The app uses only Python's standard library. No account or initial data file is required.
+
+## Use and data
+
+1. Enter a nonempty item name and a nonnegative, finite numeric price, labeled in yuan (元), then click 添加到清单. New items enter 待选.
+2. Drag an item's row into another column to change its state. Checkboxes show selection totals and enable 删除勾选 (delete selected); checking an item does not change its state.
+
+总预算 sums all items, including purchased items. Amounts display two decimal places, while stored prices retain their entered decimal precision.
+
+Adding, moving, or deleting items saves `shopping_tracker_data.json` in your home directory; the app loads it on startup. Checkbox selections are not saved.
+
+Save failures are silent, invalid JSON is ignored, and malformed records can stop loading. Keep your own backup; there is no undo. Use finite prices: `NaN` can raise an error and `Infinity` is currently accepted.
+
+## Optional executable
+
+Packaging requires a separate PyInstaller installation:
+
 ```bash
 python -m PyInstaller --noconsole --onefile --name "统计清单" list.py
 ```
 
-The executable appears under dist/统计清单.exe. It still reads/writes ~/shopping_tracker_data.json.
+The documented Windows output is `dist/统计清单.exe`; this build has not been tested here. The packaged app uses the same home-directory data file. Keep generated data, `dist/`, `build/`, and `__pycache__/` out of version control.
 
-Notes
-Do not commit shopping_tracker_data.json, dist/, build/, or __pycache__/.
-To share binaries, upload the generated .exe to a GitHub Release instead of committing it.
+## License
+
+[MIT](LICENSE), copyright © 2025 nine19een.
